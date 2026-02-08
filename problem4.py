@@ -1,21 +1,30 @@
+## Problem 1: (https://leetcode.com/problems/implement-queue-using-stacks/)
+
 class MyQueue:
 
     def __init__(self):
-        self.my_arr = []
+        self.in_stack = []
+        self.out_stack = []
 
     def push(self, x: int) -> None:
-        self.my_arr.append(x)
+        self.in_stack.append(x)
 
     def pop(self) -> int:
-        pop_val = self.my_arr[0]
-        self.my_arr = self.my_arr[1:]
-        return pop_val
+        if self.out_stack:
+            return self.out_stack.pop()
+        while self.in_stack:
+            self.out_stack.append(self.in_stack.pop())
+        return self.out_stack.pop()
 
     def peek(self) -> int:
-        return self.my_arr[0]
+        if self.out_stack:
+            return self.out_stack[-1]
+        if self.in_stack:
+            return self.in_stack[0]
+        return -1
 
     def empty(self) -> bool:
-        if len(self.my_arr) > 0:
+        if self.in_stack or self.out_stack:
             return False
         return True
 
